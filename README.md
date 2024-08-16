@@ -28,8 +28,15 @@ https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87
 [도움 된 언리얼 포럼](https://forums.unrealengine.com/t/initializecomponent-not-firing-on-spawn/322782)
 <br/><br/>
 
-## 4. Projectile not replicating
+## 4. Skeletal Mesh Component Replication Failed
+[캐릭터가 가지고 있는 아이템을 버리는 기능](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.cpp)
+을 만들 때 Skeletal mesh가 Replicate되지 않아 Client쪽에서 아무것도 보이지 않았다. 처음에는 Projectile 자체가 생성이 안된줄 알았는데, OnOverlapBegin은 반응해서 Skeletal Mesh에만 문제가 있는 것을 알았다.
 
+-> 찾아보니 Skeletal Mesh Component는 Replicate를 지원하지 않는다고 한다. 보통은 이런 경우 Multicast로 바뀐 Skeletal mesh 정보를 보내고, OnRep으로 각 Client에서 바꾼다고 써있다.
+
+그러나 이 경우에는 Item data에 mesh 정보가 있어서 위와 같이 우회하는 대신, ReplicatedUsing으로 Item Data가 바뀌었음을 알리고 OnRep에서 mesh를 바꾸도록 해봤더니 고쳐졌다.
+
+이 방식이 Multicast->OnRep으로 Skeletal mesh만 보내는 것보다 좋은 방법인지는 잘 모르겠다. Item Data에 들어있는 정보가 더 많아서 비교적 무겁지 않을까..?
 
 <br/><br/>
 
