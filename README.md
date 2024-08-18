@@ -9,13 +9,13 @@
 ```c++
 UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>(OwningActor);
 ```
-위와 같이 작성했을 때 CharacterWidget이 자꾸 null이 됐다.
+> 위와 같이 작성했을 때 CharacterWidget이 자꾸 null이 됐다.
 
--> 인터페이스는 'U'MyCharacterWidgetInterface가 아니라 **'I'MyCharacterWidgetInterface**이다!
+-> 인터페이스는 "U"MyCharacterWidgetInterface가 아니라 **"I"MyCharacterWidgetInterface**이다!
 <br/><br/>
 
 ## 2. ReplicatedUsing 나중에 추가 시 오류
-Stat에서 MaxHp의 UPROPERTY()에 ReplicatedUsing을 끼워넣으면 100으로 설정해도 0이 되어버리는 오류가 생겼다. 이것 때문에 Hp bar에 표시되는 숫자 역시 자꾸 0이 되었다.
+Stat의 MaxHp와 CurrentHp를 replicate해야 할 일이 생겼다. 늘 했던 것 처럼 UPROPERTY()에 ```ReplicatedUsing = OnRep_func```을 추가했는데, 두 값을 100으로 초기화를 했음에도 0이 출력됐다.
 
 https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87eaf7c1/Project2/Character/MyCharacterStatComponent.h#L66-L70
 
