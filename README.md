@@ -9,7 +9,7 @@
 ```c++
 UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>(OwningActor);
 ```
-> 위와 같이 작성했을 때 CharacterWidget이 자꾸 null이 됐다.
+> 위와 같이 작성했을 때 CharacterWidget이 자꾸 null이 됐다..
 
 -> 인터페이스는 "U"MyCharacterWidgetInterface가 아니라 **"I"MyCharacterWidgetInterface**이다!
 <br/><br/>
@@ -33,7 +33,8 @@ https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87
 그러나 이 경우에는 Item data에 mesh 정보가 있어서 위와 같이 우회하는 대신, ReplicatedUsing으로 Item Data가 바뀌었음을 알리고 OnRep에서 mesh를 바꾸도록 해봤더니 고쳐졌다. 이 방식이 Multicast->OnRep으로 Skeletal mesh만 보내는 것보다 좋은 방법인지는 잘 모르겠다. Item Data에 들어있는 정보가 더 많아서 비교적 무겁지 않을까..?
 <br/><br/>
 
-## 4. 
+## 4. C++의 Enum을 블루프린트와 연동하고 싶다면..
+UENUM(*Blueprint*) <- 이렇게 괄호 안에 표시👌
 
 <br/><br/>
 
@@ -74,8 +75,8 @@ https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87
 [언리얼 Framework Ref](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/gameplay-framework-quick-reference?application_version=4.27)
 <br/><br/>
 
-## 3. 게임 플레이 시 친구가 이동하는 이유
-공부해서 쓰기
+## 3. 실생활 적용
+게임 플레이 시 친구가 이동하는 이유 공부해서 쓰기
 
 
 
