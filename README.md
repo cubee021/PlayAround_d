@@ -5,20 +5,41 @@
 + 엔진 : UE5.1
 
 ## 🚀 Trouble Shooting
-## 1. RPC 헷갈림
+## 1. RPC 헷갈렸던 내용
+#### 1) RPC 함수 내에서 this는 그 함수를 실행시킨 대상
 
+|RPC|실행 대상|this|
+|---|---|---|
+|ServerRPC|Client|Client|
+|ClientRPC|Server|Server|
+|MulticastRPC|Server|Server|
+
+#### 2) OnRep은 Server -> Client들로 상태 전송
+#### 3) Authority는 무조건 Server가 아니다
+Authority = Server, 서버에 있는 Client
+
+
+
+[언리얼 Networking overview](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/networking-overview-for-unreal-engine)
 <br/><br/>
 
-## 2. Interface 착오
+## 2. Gameplay Framework
+> 첫 번째 프로젝트에서는 신경 안쓰고 막 작성했다면 지금은 다르다..!
+
+ 
+[관련 언리얼 도큐](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/gameplay-framework-quick-reference?application_version=4.27)
+<br/><br/>
+
+## 3. Interface 착오
 ```c++
 UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>(OwningActor);
 ```
-CharacterWidget이 자꾸 null로 설정됐다.
+위와 같이 작성했을 때 CharacterWidget이 자꾸 null이 됐다.
 
--> 인터페이스는 'U'MyCharacterWidgetInterface가 아니라 **'I'MyCharacterWidgetInterface**이다!
+-> 인터페이스는 'U'MyCharacterWidgetInterface가 아니라 **'I'MyCharacterWidgetInterface**
 <br/><br/>
 
-## 3. ReplicatedUsing 사용한 변수값 저장 안됨
+## 4. ReplicatedUsing 사용한 변수값 저장 안됨
 Stat에서 MaxHp의 UPROPERTY()에 ReplicatedUsing을 끼워넣으면 100으로 설정해도 0이 되어버리는 오류가 생겼다. 이것 때문에 Hp bar에 표시되는 숫자 역시 자꾸 0이 되었다.
 
 https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87eaf7c1/Project2/Character/MyCharacterStatComponent.h#L66-L70
@@ -28,7 +49,7 @@ https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87
 [도움 된 언리얼 포럼](https://forums.unrealengine.com/t/initializecomponent-not-firing-on-spawn/322782)
 <br/><br/>
 
-## 4. Skeletal Mesh Component Replication Failed
+## 5. Skeletal Mesh Component Replication Failed
 [캐릭터가 가지고 있는 아이템을 버리는 기능](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.cpp)
 을 만들 때 Skeletal mesh가 Replicate되지 않아 Client쪽에서 아무것도 보이지 않았다. 처음에는 Projectile 자체가 생성이 안된줄 알았는데, OnOverlapBegin은 반응해서 Skeletal Mesh에만 문제가 있는 것을 알았다.
 
@@ -37,7 +58,7 @@ https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87
 그러나 이 경우에는 Item data에 mesh 정보가 있어서 위와 같이 우회하는 대신, ReplicatedUsing으로 Item Data가 바뀌었음을 알리고 OnRep에서 mesh를 바꾸도록 해봤더니 고쳐졌다. 이 방식이 Multicast->OnRep으로 Skeletal mesh만 보내는 것보다 좋은 방법인지는 잘 모르겠다. Item Data에 들어있는 정보가 더 많아서 비교적 무겁지 않을까..?
 <br/><br/>
 
-## 5. Seamless Travel하다 말음
+## 6. Seamless Travel하다 말음
 
 
 <br/><br/>
