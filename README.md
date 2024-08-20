@@ -57,7 +57,11 @@ MyDropItem의 "생성자"에 Skeletal Mesh component를 하나 지정해주었�
 UENUM(*Blueprint*) <- 이렇게 괄호 안에 표시
 <br/><br/>
 
-## 5. Seamless Travel하다 말음
+## 5. Client에 HUD widget 띄우기
+
+<br/><br/>
+
+## 6. Seamless Travel하다 말음
 
 
 <br/><br/>
