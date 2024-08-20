@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Character/MyCharacterBase.h"
+#include "Interface/MyCharacterItemInterface.h"
 #include "MyItemData.h"
 #include "MyMeleeItemData.h"
 #include "MyGunItemData.h"
@@ -18,19 +19,21 @@ AMyDropItem::AMyDropItem()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Trigger = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
-	MeleeSkeletal = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeleeSkeletal"));
+	ItemSkeletal = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ItemSkeletal"));
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 
 	RootComponent = Trigger;
-	MeleeSkeletal->SetupAttachment(Trigger);
+	ItemSkeletal->SetupAttachment(Trigger);
+	ItemSkeletal->SetIsReplicated(true); // 소용 없음
 
 	Trigger->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
 	Trigger->SetBoxExtent(FVector(40.0f, 40.0f, 30.0f));
 	Trigger->SetRelativeLocation(FVector(0.f, 0.f, 40.f));
 
-	MeleeSkeletal->SetCollisionProfileName(TEXT("NoCollision"));
-	MeleeSkeletal->SetRelativeLocation(FVector(0.f, 0.f, 40.f));
-	MeleeSkeletal->SetRelativeRotation(FRotator(45.f, 0.f, 0.f));
+	ItemSkeletal->SetCollisionProfileName(TEXT("NoCollision"));
+	ItemSkeletal->SetRelativeLocation(FVector(0.f, 0.f, 40.f));
+	ItemSkeletal->SetRelativeRotation(FRotator(45.f, 0.f, 0.f));
+
 
 	ProjectileMovementComponent->SetUpdatedComponent(Trigger);
 	ProjectileMovementComponent->InitialSpeed = 300.0f;
@@ -39,6 +42,8 @@ AMyDropItem::AMyDropItem()
 	ProjectileMovementComponent->bShouldBounce = false;
 
 	bReplicates = true;
+	SetReplicateMovement(true);
+	FlickeringTimer = FlickeringTerm;
 }
 
 void AMyDropItem::PostInitializeComponents()
@@ -53,7 +58,7 @@ void AMyDropItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	MeleeSkeletal->AddRelativeRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
+	ItemSkeletal->AddRelativeRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
 
 	Duration -= DeltaTime;
 
@@ -64,21 +69,21 @@ void AMyDropItem::Tick(float DeltaTime)
 
 	if (Duration < 2.f)
 	{
-		if (FlickeringTerm < 0)
+		if (FlickeringTimer < 0)
 		{
-			if (MeleeSkeletal->IsVisible())
+			if (ItemSkeletal->IsVisible())
 			{
-				MeleeSkeletal->SetVisibility(false);
+				ItemSkeletal->SetVisibility(false);
 			}
 			else
 			{
-				MeleeSkeletal->SetVisibility(true);
+				ItemSkeletal->SetVisibility(true);
 			}
 
-			FlickeringTerm = 0.2f;
+			FlickeringTimer = FlickeringTerm;
 		}
 
-		FlickeringTerm -= DeltaTime;
+		FlickeringTimer -= DeltaTime;
 	}
 }
 
@@ -99,7 +104,7 @@ void AMyDropItem::SetItemSkeletal()
 		{
 			MeleeItem->WeaponMesh.LoadSynchronous();
 		}
-		MeleeSkeletal->SetSkeletalMesh(MeleeItem->WeaponMesh.Get());
+		ItemSkeletal->SetSkeletalMesh(MeleeItem->WeaponMesh.Get());
 
 		return;
 	}
@@ -111,13 +116,19 @@ void AMyDropItem::SetItemSkeletal()
 		{
 			GunItem->WeaponMesh.LoadSynchronous();
 		}
-		MeleeSkeletal->SetSkeletalMesh(GunItem->WeaponMesh.Get());
+		ItemSkeletal->SetSkeletalMesh(GunItem->WeaponMesh.Get());
 	}
+}
+
+void AMyDropItem::OnRep_SetItemToDrop()
+{
+	ensure(Item);
+	SetItemSkeletal();
 }
 
 bool AMyDropItem::FireInDirection(const FVector& ShootDirection)
 {
-	if (Item == nullptr || !MeleeSkeletal)
+	if (Item == nullptr || !ItemSkeletal)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Error : Drop item failed!"));
 		return 0;
@@ -130,10 +141,18 @@ bool AMyDropItem::FireInDirection(const FVector& ShootDirection)
 
 void AMyDropItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepHitResult)
 {
-	AMyCharacterBase* Character = Cast<AMyCharacterBase>(OtherActor);
+	IMyCharacterItemInterface* Character = Cast<IMyCharacterItemInterface>(OtherActor);
 	if (Character)
 	{
-
+		Character->TakeItem(Item);
+		Destroy();
 	}
+}
+
+void AMyDropItem::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMyDropItem, Item);
 }
 

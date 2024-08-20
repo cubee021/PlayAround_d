@@ -26,7 +26,4 @@ public:
 	virtual FTransform GetRandomStartTransform() const = 0;
 	virtual void OnPlayerKilled(AController* Killer, AController* KilledPlayer, APawn* KilledPawn) = 0;
 
-public:
-	//Timer widget
-	virtual void SetupHUDWidget(class UMyMatchTimerWidget* InHUDWidget) = 0;
 };

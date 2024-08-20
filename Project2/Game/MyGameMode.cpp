@@ -72,18 +72,6 @@ void AMyGameMode::FinishMatch()
 	}
 }
 
-void AMyGameMode::SetupHUDWidget(UMyMatchTimerWidget* InHUDWidget)
-{
-	if (InHUDWidget)
-	{
-		AMyGameState* const MyGameState = Cast<AMyGameState>(GameState);
-		if (MyGameState)
-		{
-			InHUDWidget->UpdateTimer(MyGameState->RemainingTime);
-		}
-	}
-}
-
 FTransform AMyGameMode::GetRandomStartTransform() const
 {
 	if (PlayerStartArray.Num() == 0)

@@ -190,8 +190,7 @@ protected:
 
 public:
 	/**
-	Level Stat section (이건 그냥 강의 따라서 만들어본거)
-	*/
+	Level Stat section */
 	int32 GetLevel();
 	void SetLevel(int32 InNewLevel);
 	void ApplyStat(const FMyCharacterStat& BaseStat, const FMyCharacterStat& ModifierStat);

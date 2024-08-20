@@ -25,25 +25,11 @@ void UMyMatchTimerWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	// 방법1 : 게임모드 거쳐서 시간 업데이트, 클라이언트는 업데이트 안됨.
-	IMyGameInterface* GameMode = Cast<IMyGameInterface>((UObject*)GetWorld()->GetAuthGameMode());
-	if (GameMode)
-	{
-		AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameMode);
-		if (MyGameMode)
-		{
-			MyGameMode->SetupHUDWidget(this);
-		}
-	}
-
-	// 방법2 : 게임 스테이트에서 바로 시간 가져옴, 서버/클라이언트 모두 업데이트 됨.
-	/* 이 방법으로 바꿀 경우 MyGameInterface에서 가상함수 삭제
 	AMyGameState* GameState = Cast<AMyGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (GameState)
 	{
 		UpdateTimer(GameState->RemainingTime);
 	}
-	*/
 }
 
 void UMyMatchTimerWidget::UpdateTimer(float NewTime)

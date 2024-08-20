@@ -93,7 +93,7 @@ protected:
 	void AttackHitConfirm(AActor* HitActor);
 
 	///////////////////////////////////////////////////////
-	// NoWeapon(punch), Melee networking from here
+	// NoWeapon(punch), Melee networking
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	/** Client notify Server a client attack. Input client's attack start time */
@@ -155,13 +155,13 @@ public:
 
 protected:
 	///////////////////////////////////////////////////////
-	// Gun fire networking from here
+	// Gun fire networking
 	void TakeDamageFromBullet(AActor* DamagedCharacter);
 
 	/** 클라이언트가 총을 쐈다고 서버로 알리면 서버에서 해당 클라이언트의 fire() 실행.
 	* 모든 플레이어에게 bullet projectile이 보이며, 판정이 정확함.
 	* 클라이언트의 fire animation과 서버의 fire()의 타이밍을 맞추려면 ServerRPCFire_Validate()를
-	* 만들어야 하는데 어려워서 못만들음 */
+	* 만들어야 하는데 어려워서 보류.. */
 	UFUNCTION(Server, Reliable)
 		void ServerRPCFire();
 	UFUNCTION(Client, Unreliable)
@@ -182,7 +182,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Gun)
 		TSubclassOf<class AActor> ItemProjectileClass;
 
-	//UFUNCTION(Server, Reliable)
-	//	void ServerRPCDropItem();
+	UFUNCTION(Server, Reliable)
+		void ServerRPCDropItem();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void MulticastRPCDropItem();
 
 };

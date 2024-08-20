@@ -19,6 +19,7 @@
 #include "EngineUtils.h"
 #include "Engine/DamageEvents.h"
 #include "Item/MyDropItem.h"
+#include "UI/MyHUDWidget.h"
 
 
 AMyCharacterPlayer::AMyCharacterPlayer()
@@ -554,7 +555,7 @@ void AMyCharacterPlayer::DropItem()
 
 	if (!HasAuthority())
 	{
-		//ServerRPCFire();
+		ServerRPCDropItem();
 	}
 	else
 	{
@@ -580,19 +581,26 @@ void AMyCharacterPlayer::DropItem()
 					Projectile->SetItemToDrop(SavedItemData);
 
 					FVector LaunchDirection = MuzzleRotation.Vector();
+					// Drop Item 발사까지 성공 하면 캐릭터 무기->펀치로 교체
 					if (Projectile->FireInDirection(LaunchDirection))
 					{
 						TakeItem(NoWeaponData);
+						MulticastRPCDropItem();
 					}
-
-
-					// 총상 입은 플레이어가 damage를 자신과 서버에 알리기 위해
-					//Projectile->OnBulletHit.AddUObject(this, &AMyCharacterPlayer::TakeDamageFromBullet);
 				}
 			}
-
 		}
 	}
+}
+
+void AMyCharacterPlayer::ServerRPCDropItem_Implementation()
+{
+	DropItem();
+}
+
+void AMyCharacterPlayer::MulticastRPCDropItem_Implementation()
+{
+	TakeItem(NoWeaponData);
 }
 
 void AMyCharacterPlayer::ServerRPCNotifyBulletHit_Implementation(AActor* DamagedCharacter)

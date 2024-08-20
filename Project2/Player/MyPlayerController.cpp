@@ -2,16 +2,16 @@
 
 
 #include "MyPlayerController.h"
-#include "Project2/UI/MyMatchTimerWidget.h"
-#include "Project2/UI/MyMatchEndWidget.h"
-#include "Project2/Game/MyGameMode.h"
+#include "UI/MyHUDWidget.h"
+#include "UI/MyMatchEndWidget.h"
+#include "Game/MyGameMode.h"
 
 AMyPlayerController::AMyPlayerController()
 {
-	static ConstructorHelpers::FClassFinder<UMyMatchTimerWidget> MyMatchTimerWidgetRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Project2/UI/WBP_MatchTimer.WBP_MatchTimer_C'"));
-	if (MyMatchTimerWidgetRef.Class)
+	static ConstructorHelpers::FClassFinder<UMyHUDWidget> MyHUDWidgetRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Project2/UI/WBP_CharacterHUD.WBP_CharacterHUD_C'"));
+	if (MyHUDWidgetRef.Class)
 	{
-		MyTimerWidgetClass = MyMatchTimerWidgetRef.Class;
+		MyHUDWidgetClass = MyHUDWidgetRef.Class;
 	}
 
 	static ConstructorHelpers::FClassFinder<UMyMatchEndWidget> MyMatchEndWidgetRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Project2/UI/WBP_MatchEnd.WBP_MatchEnd_C'"));
@@ -19,7 +19,6 @@ AMyPlayerController::AMyPlayerController()
 	{
 		MyMatchEndWidgetClass = MyMatchEndWidgetRef.Class;
 	}
-
 }
 
 void AMyPlayerController::BeginPlay()
@@ -28,13 +27,13 @@ void AMyPlayerController::BeginPlay()
 	
 	if (IsLocalController())
 	{
-		MyTimerWidget = CreateWidget(GetWorld(), MyTimerWidgetClass);
-		if (MyTimerWidget)
+		MyHUDWidget = CreateWidget(this, MyHUDWidgetClass);
+		if (MyHUDWidget)
 		{
-			MyTimerWidget->AddToViewport();
+			MyHUDWidget->AddToViewport();
 		}
 
-		MyMatchEndWidget = CreateWidget(GetWorld(), MyMatchEndWidgetClass);
+		MyMatchEndWidget = CreateWidget(this, MyMatchEndWidgetClass);
 		if (MyMatchEndWidget)
 		{
 			MyMatchEndWidget->AddToViewport();
@@ -43,6 +42,8 @@ void AMyPlayerController::BeginPlay()
 		MyMatchEndWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
 
+	// GameMode는 서버only, GameState는 서버, 클라이언트
+	// delegate를 받지 못해서 client에서는 결과 화면이 뜨지를 못함
 	AMyGameMode* GameMode = Cast<AMyGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{

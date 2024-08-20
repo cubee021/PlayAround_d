@@ -22,19 +22,18 @@ class PROJECT2_API AMyPlayerState : public APlayerState
 public:
 	AMyPlayerState();
 
-
 protected:
 	int32 KillPoint;
 	int32 PlayPoint;
 
 public:
-	void SetKillPoint(int32 NewKillPoint);
-	int32 GetKillPoint();
+	FORCEINLINE int32 GetKillPoint() const { return KillPoint; }
+	FORCEINLINE void SetKillPoint(int32 NewKillPoint) { KillPoint = NewKillPoint; }
 
-	void SetPlayPoint(int32 NewPlayPoint);
-	int32 GetPlayPoint();
+	FORCEINLINE int32 GetPlayPoint() const { return PlayPoint; }
+	FORCEINLINE void SetPlayPoint(int32 NewPlayPoint) { PlayPoint = NewPlayPoint; }
 
 protected:
-	/** Copy points above to make sure it is persistent on new map */
+	/** Copy info above to make sure it is persistent after seamless travel */
 	virtual void CopyProperties(APlayerState* PlayerState);
 };

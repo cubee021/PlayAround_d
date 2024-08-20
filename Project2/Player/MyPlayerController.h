@@ -20,14 +20,13 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
-	//위젯 더 추가하려면 하나의 HUDWidget에 모아 사용하는게 바람직
-
+	/** 플레이어 화면에 보여지는 위젯 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
-		TSubclassOf<class UMyMatchTimerWidget> MyTimerWidgetClass;
-	/** Timer widget on top of the screen */
+		TSubclassOf<class UMyHUDWidget> MyHUDWidgetClass;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = HUD)
-		TObjectPtr<class UUserWidget> MyTimerWidget;
-
+		TObjectPtr<class UUserWidget> MyHUDWidget;
+	/** 게임 끝나면 보여지는 결과 화면 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
 		TSubclassOf<class UMyMatchEndWidget> MyMatchEndWidgetClass;
 

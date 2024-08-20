@@ -9,26 +9,6 @@ AMyPlayerState::AMyPlayerState()
 	PlayPoint = 0;
 }
 
-void AMyPlayerState::SetKillPoint(int32 NewKillPoint)
-{
-	KillPoint = NewKillPoint;
-}
-
-int32 AMyPlayerState::GetKillPoint()
-{
-	return KillPoint;
-}
-
-void AMyPlayerState::SetPlayPoint(int32 NewPlayPoint)
-{
-	PlayPoint = NewPlayPoint;
-}
-
-int32 AMyPlayerState::GetPlayPoint()
-{
-	return PlayPoint;
-}
-
 void AMyPlayerState::CopyProperties(APlayerState* PlayerState)
 {
 	Super::CopyProperties(PlayerState);

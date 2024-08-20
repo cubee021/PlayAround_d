@@ -32,17 +32,13 @@ public:
 protected:
 	virtual void PostInitializeComponents() override;
 	virtual void DefaultGameTimer();
-	/** Broadcast tha match has end */
+	/** Broadcast a match has end */
 	void FinishMatch();
 
 	FTimerHandle GameTimerHandle;
 
 protected:
 	TArray<TObjectPtr<class APlayerStart>> PlayerStartArray;
-
-public:
-	/** Update Timer of HUD */
-	virtual void SetupHUDWidget(class UMyMatchTimerWidget* InHUDWidget);
 
 public:
 	/** Seamless Travel Section
