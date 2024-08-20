@@ -67,7 +67,7 @@ UENUM(*Blueprint*) <- 이렇게 괄호 안에 표시
 <br/><br/>
 
 ## 📖 공부
-## 1. RPC 헷갈렸던 내용
+## 1. 네트워킹 헷갈렸던 내용
 #### 1) RPC 함수 내에서 this는 그 함수를 실행시킨 대상
 
 |RPC|실행 대상|this|
@@ -88,12 +88,22 @@ UENUM(*Blueprint*) <- 이렇게 괄호 안에 표시
 + HasAuthority() :
 + IsLocallyControlled() :
 
+#### 5) GameMode & GameState
+|GameMode|GameState|
+|---|---|
+|Server **ONLY**|Server, Client|
+
+GameState가 GameMode의 하위 클래스라기 보다는 :
+ + GameMode : 게임의 전반적 흐름 관리
+ + GameDtate : GameMode에 관련된 정보 관리. Client가 모니터링할 수 있음
+
+[문서에서 더 알아보기](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/game-mode-and-game-state-in-unreal-engine)
 <br/><br/>
 
 ## 2. Gameplay Framework
 > 첫 번째 프로젝트에서는 신경 안쓰고 막 작성했다면 지금은 다르다..!
 
-언리얼에서는 클래스마다 역할이 정해져있다. 각각 역할에 맞게 기능이 정의되어 있으므로 이에 따라 함수를 작성/정리하는 것이 바람직하다.
+언리얼에서는 클래스마다 역할이 정해져있다. 각각 역할에 맞게 기능이 정의되어 있으므로 이에 따라 함수를 작성/정리하는 것이 바람직.
  
 [언리얼 Framework Ref](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/gameplay-framework-quick-reference?application_version=4.27)
 <br/><br/>
