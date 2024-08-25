@@ -6,7 +6,7 @@
 
 ## 🚀 Trouble Shooting
 ## 1. Cpp 파일 분리
-*Know Your Limits*를 만들때 가장 불편했던 점이 분야별로 cpp 파일을 분리하지 못한 것이다. 다른 언리얼 무료 프로젝트를 다운 받아보면 보기 좋게 정리되어 있던데..😳
+*Know Your Limits*를 만들때 가장 불편했던 점이 분야별로 cpp 파일을 분리하지 못한 것이다. 다른 언리얼 무료 프로젝트를 다운 받아보면 보기 좋게 정리되어 있던데..😳 매번 시도하면 크래시만 났었다.
 
 그리고 드디어 알아온 방법 : 
 1. 폴더는 프로젝트 파일에 직접 생성
@@ -22,9 +22,19 @@ UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>
 -> 인터페이스는 "U"MyCharacterWidgetInterface가 아니라 **"I"MyCharacterWidgetInterface**이다!
 <br/><br/>
 
-## 3. Client쪽 Bullet 발사 판정
-현재 채택한 방식 : **Server에서 해당 Client의 총알 발사**
+## 3. Client쪽 Bullet Fire/Hit 판정
+언리얼 포럼에서 사용하는 방식을 두 가지로 추렸다 :
+1. **Server**에서 해당 Client의 총알 생성 / replicate / 판정. Client는 애니메이션만 수행
+2. **Client**에서 안보이는 총알 생성 / 판정 & 판정 결과를 Server로 보냄. Server는 총알 생성 / replicate
+<br/>
 
+> 각각 장단점이 있을거라 생각하지만, "1번"을 채택했다. 그 이유는..
++ Server가 모든 Client의 정보를 가지고 있으므로, **Server에서 판정하는 것이 옳다**고 판단
++ 총알이 벽에 튕기고 구르기 때문에 Client와 Server의 [Bullet](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Weapon/MyBullet.cpp)을 따로 생성하면 싱크로가 맞지 않는다.
+  + ex) 벽에 튕겼을 때 Client에서는 오른쪽, Server에서는 왼쪽으로 날아갔다면 상대가 왼쪽에 있음에도 총에 맞지 않은 것으로 판정이 날 수 있다👻👻
++ 구현 측면에서도 훨씬 간단하다..!
+
+구현부 : [AMyCharacterPlayer::Fire()](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Character/MyCharacterPlayer.cpp)
 <br/><br/>
 
 ## 4. ReplicatedUsing 나중에 추가 시 오류
@@ -81,13 +91,29 @@ https://github.com/cubee021/PlayAround_d/blob/b7a3178a2b7c20dc0c4f11a120c9cc8dea
 + UserWidget은 replicate되지 않는다. Local로만 존재하기 떄문에 Server와 Client 각각 구현해줘야 한다.
 <br/><br/>
 
-## 8. Seamless Travel 할 때 PlayerState 넘기기
-메인 맵에서 다른 맵으로 넘어갈 수 있도록 Seamless travel을 구현해봤다. 데이터가 바뀌지 않고 넘어간다고 들어서 채택을 했는데, 정작 모든 캐릭터 데이터가 초기화된다. 
+## 8. Seamless Travel 할 때 데이터 넘기기
+메인 맵에 미니게임 형식으로 점프맵을 추가하고 싶었다. 메인 맵에서 점프맵으로 Server를 비롯한 모든 Client를 이동시키기 위해 Seamless Travel을 활성화했다.
 
--> PlayerState는 *Copy Constructor*를 만들어서 해결할 수 있다.
+분명 서버와 연결이 끊기지 않는다고 해서 모두 그대로 이동할 것 같았는데, 플레이어 캐릭터가 모두 초기화 됐다..
 
-[도움 된 언리얼 포럼](https://forums.unrealengine.com/t/how-can-i-use-seamless-travel-to-persist-data-across-map-changes/317174)
+-> [문서](https://dev.epicgames.com/documentation/en-us/unreal-engine/travelling-in-multiplayer-in-unreal-engine?application_version=5.1)를 살펴보면 다음의 경우를 제외하면 모두 데이터를 잃는다고 한다 :
++ GameMode
++ Controllers & PlayerState
++ GetSeamlessTravelActorList()를 통해 추가된 Actor들
 
+> 심지어 PlayerController와 Pawn의 연결성도 잃는다..;;
+<br/>
+
+#### 그래도 PlayerState는 CopyProperties를 override해서 해결할 수 있다! [도움 된 언리얼 포럼](https://forums.unrealengine.com/t/how-can-i-use-seamless-travel-to-persist-data-across-map-changes/317174)
+
+https://github.com/cubee021/PlayAround_d/blob/15474570a421d4b7a1532ff3a374c33353367087/Project2/Game/MyPlayerState.cpp#L12-L22
+<br/>
+
+> 여담 - 현재 Seamless Travel 이후
+> + 보존되는 것 : 플레이어 스코어
+> + 현재 보존되지 않는 것 : Pawn을 비롯한 Component 데이터(Health, 인칭 시점, Weapon Mode)
+> 
+> 과 같이 정리할 수 있겠다. 안타깝게도 플레이어들이 서로 다른 점프맵으로 이동하는 큰 문제도 남아있다.
 <br/><br/>
 
 ## 📖 공부
