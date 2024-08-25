@@ -22,7 +22,12 @@ UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>
 -> 인터페이스는 "U"MyCharacterWidgetInterface가 아니라 **"I"MyCharacterWidgetInterface**이다!
 <br/><br/>
 
-## 3. ReplicatedUsing 나중에 추가 시 오류
+## 3. Client쪽 Bullet 발사 판정
+현재 채택한 방식 : **Server에서 해당 Client의 총알 발사**
+
+<br/><br/>
+
+## 4. ReplicatedUsing 나중에 추가 시 오류
 [Stat의 MaxHp와 CurrentHp](https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87eaf7c1/Project2/Character/MyCharacterStatComponent.h)를 replicate해야 할 일이 생겼다. 늘 했던 것 처럼 UPROPERTY()에 ```ReplicatedUsing = OnRep_func```을 추가하고 두 값이 바뀐 것을 알려줄 Delegate를 broadcast했다. 그런데 두 값을 100으로 초기화를 했음에도 Hp bar에 100/100이 아닌 0/0과 같이 출력됐다. 상대에게 공격 받아도 한번에 쓰러져버렸다.
 
 -> Binaries, Intermediate 파일을 **지우고 다시 시작하니** 해결됐다. 
@@ -32,7 +37,7 @@ UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>
 [도움 된 언리얼 포럼](https://forums.unrealengine.com/t/initializecomponent-not-firing-on-spawn/322782)
 <br/><br/>
 
-## 4. Skeletal Mesh Component Replication Failed
+## 5. Skeletal Mesh Component Replication Failed
 캐릭터가 보유한 아이템을 버리는 기능[(MyDropItem)](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.cpp)을 만들었는데, Server에서 떨궜을 때 Client쪽에서 물체가 보이지 않았다. 
 
 > 💡 참고로 Projectile은 서버에서 클라이언트로 자동 Replication된다
@@ -61,22 +66,27 @@ MyDropItem의 "생성자"에 Skeletal Mesh component를 하나 지정해주었�
 맵에 랜덤 무기를 소환하는 [MyItemBox](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyItemBox.cpp)에서도 맨 처음 뜨는 물체가 Server와 Client 각각 달라서 고민이었는데, 이제 고쳐봄직 하다🔧🔧
 <br/><br/>
 
-## 5. C++의 Enum을 블루프린트와 연동하고 싶다면..
+## 6. C++의 Enum을 블루프린트와 연동하고 싶다면..
 UENUM(*Blueprint*) <- 이렇게 괄호 안에 표시
 <br/><br/>
 
-## 6. Client에 HUD widget 띄우기
+## 7. Client에 HUD widget 띄우기
 남은 게임 시간을 알려주는 타이머 위젯[(MyMatchTimrWidget)](https://github.com/cubee021/PlayAround_d/blob/main/Project2/UI/MyMatchTimerWidget.cpp)을 만들었다. 컨트롤러에 추가하고 실행했는데, Server밖에 타이머가 뜨지 않는다. 
 
--> CreateWidget의 첫 번째 파라미터에 GetWorld()대신 **this**를 넣으면 해결된다!
-(https://github.com/cubee021/PlayAround_d/blob/main/Project2/Player/MyPlayerController.cpp#L30-L31)
+-> CreateWidget의 첫 번째 파라미터에 GetWorld()대신 **this**를 넣으면 된다!
 
+https://github.com/cubee021/PlayAround_d/blob/b7a3178a2b7c20dc0c4f11a120c9cc8dea22ace7/Project2/Player/MyPlayerController.cpp#L30-L30
 
-
+#### 💡 추가로 알게 된 사실
++ UserWidget은 replicate되지 않는다. Local로만 존재하기 떄문에 Server와 Client 각각 구현해줘야 한다.
 <br/><br/>
 
-## 7. Seamless Travel PlayerState 복사 
+## 8. Seamless Travel 할 때 PlayerState 넘기기
+메인 맵에서 다른 맵으로 넘어갈 수 있도록 Seamless travel을 구현해봤다. 데이터가 바뀌지 않고 넘어간다고 들어서 채택을 했는데, 정작 모든 캐릭터 데이터가 초기화된다. 
 
+-> PlayerState는 *Copy Constructor*를 만들어서 해결할 수 있다.
+
+[도움 된 언리얼 포럼](https://forums.unrealengine.com/t/how-can-i-use-seamless-travel-to-persist-data-across-map-changes/317174)
 
 <br/><br/>
 
