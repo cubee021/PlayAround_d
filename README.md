@@ -52,15 +52,14 @@ UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>
 
 > 💡 참고로 Projectile은 서버에서 클라이언트로 자동 Replication된다
 
-[MyBullet](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Weapon/MyBullet.cpp)을 만들 때 동일한 문제가 있었어서 collision을 다시 설정해봤는데도 해결되지 않았다. 그런데 OnOverlapBegin()에 로그를 찍고 Client 캐릭터를 움직여보니 반응이 있다! Projectile에는 문제가 없고 보이지만 않는다면, Skeletal Mesh component가 replicate되지 않았을 것이다.
+[MyBullet](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Weapon/MyBullet.cpp)을 만들 때 동일한 문제가 있었어서 collision을 다시 설정해봤는데도 해결되지 않았다. 그런데 OnOverlapBegin()에 로그를 찍고 Client 캐릭터를 움직여보니 반응이 있다! 추가로, MyDropItem에 디폴트로 Skeletal Mesh를 하나 지정해주었더니 Client쪽에서 mesh가 보이기 시작했다.
+
+*즉, 디폴트 이후 동적으로 바뀌지 않는 상황이다.*
+
+이를 통해 "Skeletal Mesh component가 replicate되지 않았다"고 추측할 수 있다.
 <br/><br/>
 
--> **사실 Skeletal Mesh component는 Replicate를 지원한다.** [언리얼 문서](https://dev.epicgames.com/documentation/en-us/unreal-engine/component-replication?application_version=4.27)에 따르면 이 경우와 같은 Static Component는 Actor가 spawn될 때, replicate 유무에 상관없이 자동 생성된다.
-
-> 그렇다면 무엇이 문제일까?
->> 답은 "Default"에 있다.
-
-MyDropItem의 "생성자"에 Skeletal Mesh component를 하나 지정해주었다. 그랬더니 Client쪽에서 mesh가 보이기 시작했다. *즉, default는 자동 replicate되지만 그 이후로는 아닌것이다.*
+-> **실제로 Skeletal Mesh component는 replicate를 지원하지 않는다.** [네트워킹 개요](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/networking-overview-for-unreal-engine)를 쭉 내려보면 replicate되지 않는 목록이 적혀 있는데, Skeletal Mesh component가 그 중 하나이다. 그래서 아무리 값을 바꿔도 꼼짝도 하지 않았던 것이다.
 
 이를 해결하기 위해서 Skeletal Mesh component에 OnRep을 추가했.. 으나 해결되진 않았다.
 
@@ -132,11 +131,9 @@ https://github.com/cubee021/PlayAround_d/blob/15474570a421d4b7a1532ff3a374c33353
 + Authority는 무조건 Server가 아니다
   > Authority = Server(리슨 서버는 서버도 참여하므로) & 서버에 있는 Client 본체
 
-[언리얼 Networking overview](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/networking-overview-for-unreal-engine)
-
-#### 4) HasAuthority() vs IsLocallyControlled()
-+ HasAuthority() :
-+ IsLocallyControlled() :
++ HasAuthority() vs IsLocallyControlled()
+  + HasAuthority() :
+  + IsLocallyControlled() :
 
 #### 5) GameMode & GameState
 |GameMode|GameState|
