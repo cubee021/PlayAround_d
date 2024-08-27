@@ -133,6 +133,8 @@ https://github.com/cubee021/PlayAround_d/blob/15474570a421d4b7a1532ff3a374c33353
 
   : Authority = Server(리슨 서버는 서버도 참여하므로) & 서버에 있는 Client 본체
 
+<br/>
+
 + **HasAuthority() vs IsLocallyControlled()**
   + HasAuthority() : 권한이 있으면 true. 프로젝트에서는 주로 Client Proxy와 서버에 있는 본체를 구분할 때 사용했다.
   + [IsLocallyControlled()](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/GameFramework/AController/IsLocalController?application_version=5.1) : 로컬 컨트롤러면 true. Local은 아래와 같이 정의할 수 있다.
