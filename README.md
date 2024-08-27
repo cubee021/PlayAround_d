@@ -117,20 +117,20 @@ https://github.com/cubee021/PlayAround_d/blob/15474570a421d4b7a1532ff3a374c33353
 <br/><br/>
 
 ## 📖 공부
-## 1. 네트워킹 헷갈렸던 내용
-#### 1) RPC 함수 내에서 this는 그 함수를 실행시킨 대상
+## 1. 네트워크 (헷갈렸던 내용 위주로🌠)
++ RPC 함수 내에서 this는 그 함수를 실행시킨 대상
+  
+  |RPC|실행 대상|this|
+  |---|---|---|
+  |ServerRPC|Client|Client|
+  |ClientRPC|Server|Server|
+  |MulticastRPC|Server|Server|
 
-|RPC|실행 대상|this|
-|---|---|---|
-|ServerRPC|Client|Client|
-|ClientRPC|Server|Server|
-|MulticastRPC|Server|Server|
++ OnRep은 **Server -> Clients**로 상태 전송
+  > DOREPLIFETIME으로 지정된 변수의 값이 변경될 때마다 전송한다. (Replicate 불가능한 data type은 제외)
 
-#### 2) OnRep은 Server -> Client들로 상태 전송
->> DOREPLIFETIME으로 지정된 변수의 값이 변경될 때마다 전송한다. (Replicate 불가능한 data type은 제외)
-
-#### 3) Authority는 무조건 Server가 아니다
->> Authority = Server(리슨 서버는 서버도 참여하므로) & 서버에 있는 Client 본체
++ Authority는 무조건 Server가 아니다
+  > Authority = Server(리슨 서버는 서버도 참여하므로) & 서버에 있는 Client 본체
 
 [언리얼 Networking overview](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/networking-overview-for-unreal-engine)
 
