@@ -1,7 +1,7 @@
 # PlayAround_d
 + 개인 프로젝트
 + 개발 기간 :  2024.04 ~ 진행중
-+ 장르 : TPS&FPS / Multiplayer
++ 장르 : TPS&FPS / 4인 Multiplayer
 + 서버 타입 : Listen_server
 + 엔진 : UE5.1
 
