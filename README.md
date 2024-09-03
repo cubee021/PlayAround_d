@@ -39,7 +39,7 @@ UMyCharacterWidgetInterface* CharacterWidget = Cast<UMyCharacterWidgetInterface>
 <br/><br/>
 
 ## 4. ReplicatedUsing 나중에 추가 시 오류
-[Stat의 MaxHp와 CurrentHp](https://github.com/cubee021/PlayAround_d/blob/2b16d255d7aeeaaae81e40333d35e3bb87eaf7c1/Project2/Character/MyCharacterStatComponent.h)를 replicate해야 할 일이 생겼다. 늘 했던 것 처럼 UPROPERTY()에 ```ReplicatedUsing = OnRep_func```을 추가하고 두 값이 바뀐 것을 알려줄 Delegate를 broadcast했다. 그런데 두 값을 100으로 초기화를 했음에도 Hp bar에 100/100이 아닌 0/0과 같이 출력됐다. 상대에게 공격 받아도 한번에 쓰러져버렸다.
+[Stat의 MaxHp와 CurrentHp](https://github.com/cubee021/PlayAround_d/blob/768e76650edc6ab37f351cb0a621c35721ed901d/Project2/Character/MyCharacterStatComponent.h#L66)를 replicate해야 할 일이 생겼다. 늘 했던 것 처럼 UPROPERTY()에 ```ReplicatedUsing = OnRep_func```을 추가하고 두 값이 바뀐 것을 알려줄 Delegate를 broadcast했다. 그런데 두 값을 100으로 초기화를 했음에도 Hp bar에 100/100이 아닌 0/0과 같이 출력됐다. 상대에게 공격 받아도 한번에 쓰러져버렸다.
 
 -> Binaries, Intermediate 파일을 **지우고 다시 시작하니** 해결됐다. 
 
