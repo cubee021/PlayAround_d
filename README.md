@@ -145,7 +145,7 @@ https://github.com/cubee021/PlayAround_d/blob/15474570a421d4b7a1532ff3a374c33353
     |Server|Local|Remote|
     |Client|Remote|Local|
 
-    > 🚀 Trouble Shooting - *7. Client에 HUD widget 띄우기*를 생각해보자.
+    > 🚀 Trouble Shooting - *7. Client의 HUD widget 띄우기*를 생각해보자.
   
     **UserWidget은 Local로만 존재하기 떄문에 Server와 Client 각각 구현해줘야 한다.**
 
@@ -176,10 +176,22 @@ https://github.com/cubee021/PlayAround_d/blob/15474570a421d4b7a1532ff3a374c33353
 [언리얼 Framework Ref](https://dev.epicgames.com/documentation/ko-kr/unreal-engine/gameplay-framework-quick-reference?application_version=4.27)
 <br/><br/>
 
-## 3. 실생활 적용
-게임 플레이 시 친구가 이동하는 이유 공부해서 쓰기
+## 3. 실제 게임 할때.. 왜 그렇게 됐을까?
+친구와 배그를 할 때 가끔 : 
+
+1. 친구가 내 앞아서 뛰다가 순간이동해서 뒤에 가있다.
+   
+   + 
 
 
+2. 친구가 보고 있는 물체가 나는 보이지 않거나 그 반대 상황이 생긴다.
+   
+   + 레벨(맵)에 있는 Actor는 Server에서 Client로 
+
+<br/><br/>
+
+## 🔍 자투리 공부
+[GameDeveloper-Client-Interview 리포](https://github.com/cubee021/GameDeveloper-Client-Interview/tree/main/Unreal)에 조금씩 작성중!
 
 
 
