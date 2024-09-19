@@ -18,6 +18,7 @@ void AMyPlayerState::CopyProperties(APlayerState* PlayerState)
 	{
 		MyPlayerState->SetKillPoint(GetKillPoint());
 		MyPlayerState->SetPlayPoint(GetPlayPoint());
+		MyPlayerState->SetStealPoint(GetStealPoint());
 	}
 }
 

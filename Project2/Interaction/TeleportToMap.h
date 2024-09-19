@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "TeleportToMap.generated.h"
 
+/**
+* 플레이어가 Trigger에 닿으면 다른 맵으로 Seamless Travel
+*/
 UCLASS()
 class PROJECT2_API ATeleportToMap : public AActor
 {

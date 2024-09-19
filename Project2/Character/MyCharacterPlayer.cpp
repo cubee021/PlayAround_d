@@ -9,9 +9,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "MyCharacterControlData.h"
 #include "MyCharacterStatComponent.h"
-#include "Project2/Interface/MyGameInterface.h"
-#include "Project2/Weapon/MyBullet.h"
-#include "Project2/Physics/MyCollision.h"
+#include "Interface/MyGameInterface.h"
+#include "Weapon/MyBullet.h"
+#include "Physics/MyCollision.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/GameStateBase.h"
@@ -19,7 +19,8 @@
 #include "EngineUtils.h"
 #include "Engine/DamageEvents.h"
 #include "Item/MyDropItem.h"
-#include "UI/MyHUDWidget.h"
+#include "UI/MyCurrentScoreWidget.h"
+#include "Game/MyPlayerState.h"
 
 
 AMyCharacterPlayer::AMyCharacterPlayer()
@@ -234,6 +235,20 @@ void AMyCharacterPlayer::WeaponKeyHandler()
 	else if (GetCurrentWeaponType() == EWeaponType::Gun)
 	{
 		Fire();
+	}
+}
+
+void AMyCharacterPlayer::UpdateCurrentScoreWidget(UMyCurrentScoreWidget* CurrentScoreWidget)
+{
+	if (CurrentScoreWidget)
+	{
+		AMyPlayerState* MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
+		if (MyPlayerState)
+		{
+			MyPlayerState->OnKillPointChange.AddUObject(CurrentScoreWidget, &UMyCurrentScoreWidget::UpdateKillPoint);
+			MyPlayerState->OnPlayPointChange.AddUObject(CurrentScoreWidget, &UMyCurrentScoreWidget::UpdatePlayPoint);
+			//MyPlayerState->OnStealPointChange.AddUObject(CurrentScoreWidget, &UMyCurrentScoreWidget::UpdateStealPoint);
+		}
 	}
 }
 
@@ -520,7 +535,7 @@ void AMyCharacterPlayer::Fire()
 				if (Projectile)
 				{
 					FVector LaunchDirection = MuzzleRotation.Vector();
-					Projectile->FireInDirection(LaunchDirection, Controller, Stat->GetTotalStat().Attack);
+					Projectile->FireInDirection(LaunchDirection, this, Stat->GetTotalStat().Attack);
 					// 총상 입은 플레이어가 damage를 자신과 서버에 알리기 위해
 					Projectile->OnBulletHit.AddUObject(this, &AMyCharacterPlayer::TakeDamageFromBullet);
 				}

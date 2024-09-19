@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "MyHealItem.generated.h"
 
+/** 
+* Heal Item for player
+*/
 UCLASS()
 class PROJECT2_API AMyHealItem : public AActor
 {

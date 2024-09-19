@@ -5,14 +5,15 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyCharacterControlData.h"
-#include "Project2/Item/MyMeleeItemData.h"
-#include "Project2/Item/MyGunItemData.h"
-#include "Project2/Item/MyNoWeaponData.h"
-#include "Project2/UI/MyWidgetComponent.h"
-#include "Project2/UI/MyHpBarWidget.h"
+#include "Item/MyMeleeItemData.h"
+#include "Item/MyGunItemData.h"
+#include "Item/MyNoWeaponData.h"
+#include "UI/MyWidgetComponent.h"
+#include "UI/MyHpBarWidget.h"
 #include "MyCharacterStatComponent.h"
-#include "Project2/Physics/MyCollision.h"
+#include "Physics/MyCollision.h"
 #include "Engine/DamageEvents.h"
+#include "Game/MyPlayerState.h"
 
 // Sets default values
 AMyCharacterBase::AMyCharacterBase()
@@ -325,6 +326,15 @@ void AMyCharacterBase::PlayDeadAnimation()
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	AnimInstance->StopAllMontages(0.f);
 	AnimInstance->Montage_Play(DeadMontage, 1.0f);
+}
+
+void AMyCharacterBase::SetCharacterPlayPoint(int32 AddPoint)
+{
+	AMyPlayerState* MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
+	if (MyPlayerState)
+	{
+		MyPlayerState->SetPlayPoint(MyPlayerState->GetPlayPoint() + AddPoint);
+	}
 }
 
 void AMyCharacterBase::SetupCharacterWidget(UMyUserWidget* InUserwidget)

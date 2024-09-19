@@ -7,7 +7,7 @@
 #include "MyMatchTimerWidget.generated.h"
 
 /**
- * 
+ * 플레이어 HUD에 보여지는 남은 경기 시간
  */
 UCLASS()
 class PROJECT2_API UMyMatchTimerWidget : public UMyUserWidget

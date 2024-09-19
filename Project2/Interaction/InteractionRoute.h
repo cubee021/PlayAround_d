@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "InteractionRoute.generated.h"
 
+/**
+* 지정한 Actor를 Spline을 따라 이동시키는 Actor
+*/
 UCLASS()
 class PROJECT2_API AInteractionRoute : public AActor
 {

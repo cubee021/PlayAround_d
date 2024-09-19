@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "MyTarget.generated.h"
 
+/**
+* 플레이어가 MyBullet으로 맞추면 Play point를 얻는 과녁
+*/
 UCLASS()
 class PROJECT2_API AMyTarget : public AActor
 {

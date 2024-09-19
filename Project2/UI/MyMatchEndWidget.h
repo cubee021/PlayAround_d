@@ -6,6 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "MyMatchEndWidget.generated.h"
 
+/**
+* 제한 시간 종료 후 보여지는 모든 플레이어의 점수
+*/
 UCLASS()
 class PROJECT2_API UMyMatchEndWidget : public UUserWidget
 {

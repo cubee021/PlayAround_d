@@ -8,6 +8,7 @@
 
 /**
  * Weapon type only. Use other Data Asset class to use heal function
+ * NoWeapon = Punch 이름 통일 필요
  */
 
 UENUM(BlueprintType)

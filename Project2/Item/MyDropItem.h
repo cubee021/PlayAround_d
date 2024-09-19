@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "MyDropItem.generated.h"
 
+/**
+* 플레이어가 버리는 무기를 맵에 생성하는 particle actor
+*/
 UCLASS()
 class PROJECT2_API AMyDropItem : public AActor
 {

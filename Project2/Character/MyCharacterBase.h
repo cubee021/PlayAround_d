@@ -130,6 +130,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<class UMyCharacterStatComponent> Stat;
 
+public:
+	void SetCharacterPlayPoint(int32 AddPoint);
+
 protected:
 	/** UI widget section
 	* This sets Hp bar on top of each MyCharacter's head */

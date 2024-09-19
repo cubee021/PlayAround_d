@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "MyItemBox.generated.h"
 
+/**
+* 랜덤으로 무기를 제공(spawn)하는 actor
+*/
 UCLASS()
 class PROJECT2_API AMyItemBox : public AActor
 {

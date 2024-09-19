@@ -3,10 +3,9 @@
 
 #include "MyBullet.h"
 #include "Components/SphereComponent.h"
-#include "Project2/Physics/MyCollision.h"
-#include "Project2/Character/MyCharacterPlayer.h"
+#include "Physics/MyCollision.h"
+#include "Character/MyCharacterPlayer.h"
 #include "Interaction/MyTarget.h"
-#include "Project2/Game/MyPlayerState.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Engine/DamageEvents.h"
 
@@ -51,10 +50,10 @@ void AMyBullet::BeginPlay()
 	GetWorldTimerManager().SetTimer(ExpireTimerHandle, this, &AMyBullet::BulletDestroy, Duration, false);
 }
 
-void AMyBullet::FireInDirection(const FVector& ShootDirection, AController* InShooterController, float InDamageAmount)
+void AMyBullet::FireInDirection(const FVector& ShootDirection, APawn* InShooter, float InDamageAmount)
 {
 	DamageAmount = InDamageAmount;
-	ShooterController = InShooterController;
+	Shooter = InShooter;
 
 	ProjectileMovementComponent->Velocity = ShootDirection * ProjectileMovementComponent->InitialSpeed;
 }
@@ -85,10 +84,11 @@ void AMyBullet::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor*
 	if(Target && Target->bAttackable && bCollidable)
 	{
 		Target->TargetMeshInvisible();
-		AMyPlayerState* PlayerState = Cast<AMyPlayerState>(ShooterController->PlayerState);
-		if (PlayerState)
+		
+		AMyCharacterPlayer* ShooterPlayer = Cast<AMyCharacterPlayer>(Shooter);
+		if (ShooterPlayer)
 		{
-			PlayerState->SetPlayPoint(PlayerState->GetPlayPoint() + Target->AttackPoint);
+			ShooterPlayer->SetCharacterPlayPoint(Target->AttackPoint);
 		}
 
 		Destroy();

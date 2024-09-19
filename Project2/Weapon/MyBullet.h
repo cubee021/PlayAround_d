@@ -32,7 +32,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 		TObjectPtr<class UProjectileMovementComponent> ProjectileMovementComponent;
 	/** Move this projectile in a shoot direction with default speed */
-	void FireInDirection(const FVector& ShootDirection, AController* InShooterController, float InDamageAmount);
+	void FireInDirection(const FVector& ShootDirection, APawn* InShooter, float InDamageAmount);
 
 protected:
 	void BulletDestroy();
@@ -56,8 +56,8 @@ protected:
 	int32 CollideCount;
 
 public:
-	/** Controller of an actor who spawned this bullet */
-	AController* ShooterController;
+	/** Actor who spawned this bullet */
+	APawn* Shooter;
 protected:
 	/** Damage amount overlapped player will get */
 	float DamageAmount;

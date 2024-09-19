@@ -8,7 +8,7 @@
 #include "MyNoWeaponData.generated.h"
 
 /**
- * 
+ * Punch
  */
 UCLASS()
 class PROJECT2_API UMyNoWeaponData : public UMyItemData

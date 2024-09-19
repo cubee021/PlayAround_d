@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "MyCharacterBase.h"
 #include "InputActionValue.h"
+#include "Interface/MyCurrentScoreWidgetInterface.h"
 #include "MyCharacterPlayer.generated.h"
 
 /**
  * Manages functions for player such as : Camera, input action, networking
  */
 UCLASS()
-class PROJECT2_API AMyCharacterPlayer : public AMyCharacterBase
+class PROJECT2_API AMyCharacterPlayer : public AMyCharacterBase, public IMyCurrentScoreWidgetInterface
 {
 	GENERATED_BODY()
 	
@@ -83,6 +84,9 @@ protected:
 protected:
 	/** Bind different actions depend on weapon type */
 	void WeaponKeyHandler();
+
+protected:
+	virtual void UpdateCurrentScoreWidget(class UMyCurrentScoreWidget* CurrentScoreWidget) override;
 
 protected:
 	/**

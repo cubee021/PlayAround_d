@@ -17,14 +17,13 @@ class PROJECT2_API UMyHUDWidget : public UUserWidget
 public:
 	UMyHUDWidget(const FObjectInitializer& ObjectInitializer);
 
-//public:
-	//void UpdateMatchTimer(float NewTime);
-
 protected:
 	virtual void NativeConstruct() override;
 
 protected:
 	UPROPERTY()
 		TObjectPtr<class UMyMatchTimerWidget> MatchTimer;
-	
+
+	UPROPERTY()
+		TObjectPtr<class UMyCurrentScoreWidget> CurrentScore;
 };

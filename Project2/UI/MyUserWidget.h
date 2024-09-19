@@ -7,7 +7,7 @@
 #include "MyUserWidget.generated.h"
 
 /**
- * 
+ * OwningPawn이 없는 위젯에 Owning Actor 설정
  */
 UCLASS()
 class PROJECT2_API UMyUserWidget : public UUserWidget
