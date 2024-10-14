@@ -5,6 +5,14 @@
 + 서버 타입 : Listen_server
 + 엔진 : UE5.1
 
+<br/>
+
+## 📋 포트폴리오에 첨부된 코드
+[MyDropItem.h](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.h) / 
+[MyDropItem.cpp](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.cpp)
+
+<br/>
+
 ## 🚀 Trouble Shooting
 ## 1. Cpp 파일 분리
 *Know Your Limits*를 만들때 가장 불편했던 점이 분야별로 cpp 파일을 분리하지 못한 것이다. 다른 언리얼 무료 프로젝트를 다운 받아보면 보기 좋게 정리되어 있던데..😳 매번 시도하면 크래시만 났었다.
