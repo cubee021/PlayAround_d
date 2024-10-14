@@ -8,6 +8,9 @@
 <br/>
 
 ## 📋 포트폴리오에 첨부된 코드
+[MyCharacterPlayer.h](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Character/MyCharacterPlayer.h) / 
+[MyCharacterPlayer.cpp](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Character/MyCharacterPlayer.cpp)
+
 [MyDropItem.h](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.h) / 
 [MyDropItem.cpp](https://github.com/cubee021/PlayAround_d/blob/main/Project2/Item/MyDropItem.cpp)
 
